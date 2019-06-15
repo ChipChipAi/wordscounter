@@ -29,44 +29,40 @@ func stringToMap(s string) map[string]int {
 	return m
 }
 
-func makeArr(i int) []int {
-	x := make([]int, i)
-	return x
-}
-
 func TopWordsByCount(c int, s string) map[string]int {
 	resaultMap := map[string]int{}
 
 	if c == 0 {
 		return resaultMap
-
 	}
+
 	m := stringToMap(s)
 
-	index := 0
-	a := makeArr(len(m))
 	if len(m) < c {
 		log.Printf("Max words in text = '%v'", len(m))
 		return m
 	}
+	index := 0
+	a := make([]int, len(m))
 	for _, v := range m {
 		a[index] = v
 		index += 1
 	}
 
 	sort.Sort(sort.Reverse(sort.IntSlice(a)))
-
+	sliceTopCount := a[0:c]
 	for k, v := range m {
-		for i := range a {
-			if v == i {
+		for i, value := range sliceTopCount {
+			if v == value {
 				resaultMap[k] = v
 				c -= 1
+				sliceTopCount[i] = 0
 				if c == 0 {
 					return resaultMap
 				}
+				break
 			}
 		}
 	}
 	return resaultMap
-
 }
